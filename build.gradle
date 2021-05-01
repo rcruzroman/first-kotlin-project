@@ -1,0 +1,57 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "$kotlin_version"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
+    id 'application'
+}
+
+
+jar {
+  manifest {
+    attributes("Implementation-Title": "creating-http-api-ktor",
+      "Implementation-Version": archiveVersion,
+      "Main-Class": "com.rafael.httpapi.ApplicationKt")
+  }
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+  manifest {
+    attributes 'Implementation-Title': 'Gradle Jar File Example',
+      'Implementation-Version': archiveVersion,
+      'Main-Class': 'com.rafael.httpapi.ApplicationKt'
+  }
+  archiveBaseName = project.name + '-all'
+  from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+  with jar
+}
+
+group 'com.rafael'
+version '1.0-SNAPSHOT'
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        url "https://kotlin.bintray.com/kotlinx"
+    }
+}
+
+dependencies {
+    implementation "io.ktor:ktor-server-core:$ktor_version"
+    implementation "io.ktor:ktor-server-netty:$ktor_version"
+    implementation "ch.qos.logback:logback-classic:$logback_version"
+    implementation "io.ktor:ktor-serialization:$ktor_version"
+
+    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+application {
+    mainClassName = 'com.rafael.httpapi.ApplicationKt'
+}

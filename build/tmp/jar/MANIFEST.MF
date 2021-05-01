@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Implementation-Title: creating-http-api-ktor
+Implementation-Version: property(class java.lang.String, provider(?))
+Main-Class: com.rafael.httpapi.ApplicationKt
+
